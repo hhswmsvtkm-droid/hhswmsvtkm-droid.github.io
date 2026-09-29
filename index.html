@@ -32,7 +32,7 @@
 
 *{box-sizing:border-box}
 html{scroll-behavior:auto}
-body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -84,7 +84,91 @@ h1,h2,h3,.t,.lead,.stage-cap h2,.next h3,.pt,.bigmail a{overflow-wrap:break-word
 .rv{animation:rise .9s var(--ease) both;animation-delay:calc(var(--i,0) * 70ms + 80ms)}
 @keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
 
-/* ================= ГЛАВНАЯ ================= */
+/* ================= ГЛАВНАЯ: ОБЛОЖКА ================= */
+.hs{position:relative;height:min(calc(100svh - var(--head)),940px);min-height:460px;overflow:hidden;background:#1b1c1e;color:#F4F4F1}
+.hs-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.5s ease}
+.hs-slide.on{opacity:1;z-index:1}
+.hs-slide.was{opacity:0;z-index:0}
+.hs-slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.02)}
+.hs-slide.on img{animation:kb 9s linear both}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.1)}}
+.hs-shade{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(12,13,14,.25) 0%,rgba(12,13,14,0) 30%,rgba(12,13,14,0) 45%,rgba(12,13,14,.62) 100%);pointer-events:none}
+.hs-text{position:absolute;left:0;right:0;bottom:clamp(90px,14vh,150px);z-index:3}
+.hs-text .mono{color:rgba(244,244,241,.85)}
+.hs-text h1{margin:10px 0 0;font-family:var(--f-display);font-weight:300;font-size:clamp(30px,8.6vw,128px);line-height:.98;letter-spacing:-.035em;text-wrap:balance}
+.hs-text p{margin:14px 0 0;font-size:clamp(16px,1.6vw,20px);max-width:32ch;color:rgba(244,244,241,.9)}
+.hs-cap{position:absolute;right:var(--gut);bottom:clamp(26px,4vh,44px);z-index:3;display:flex;align-items:baseline;gap:12px;text-decoration:none;color:#F4F4F1;max-width:60%}
+.hs-cap .mono{color:rgba(244,244,241,.75)}
+.hs-cap span:nth-child(2){font-size:15px;border-bottom:1px solid rgba(244,244,241,.4);padding-bottom:2px;transition:border-color .3s}
+.hs-cap:hover span:nth-child(2){border-color:#F4F4F1}
+.hs-dots{position:absolute;left:var(--gut);bottom:clamp(30px,4.4vh,48px);z-index:3;display:flex;gap:8px}
+.hs-dots button{width:34px;height:14px;display:flex;align-items:center}
+.hs-dots i{display:block;width:100%;height:2px;background:rgba(244,244,241,.3);position:relative;overflow:hidden}
+.hs-dots i::after{content:"";position:absolute;inset:0;background:#F4F4F1;transform:scaleX(0);transform-origin:left}
+.hs-dots .on i::after{animation:dot var(--dur,6s) linear forwards}
+@keyframes dot{to{transform:scaleX(1)}}
+.hs-down{position:absolute;left:50%;bottom:clamp(24px,4vh,42px);transform:translateX(-50%);z-index:3;color:#F4F4F1;font-size:13px;display:flex;gap:6px;align-items:center;opacity:.85}
+.hs-down span{display:inline-block;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(4px)}}
+
+/* ================= ГЛАВНАЯ: ПРОЕКТЫ ================= */
+.works{padding-block:clamp(48px,7vw,110px) clamp(40px,6vw,90px)}
+.works-head{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;margin-bottom:clamp(24px,3vw,40px)}
+.works-head h2{margin:0 auto 0 0;font-family:var(--f-display);font-weight:300;font-size:clamp(30px,4vw,56px);letter-spacing:-.03em}
+.works-head .filters{padding:0}
+.viewtog{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.viewtog button{font-size:13px;padding:5px 14px;border-radius:999px;color:var(--muted);transition:background .3s,color .3s}
+.viewtog button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.hidden-view{display:none!important}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,4vw,64px) clamp(16px,2.4vw,36px)}
+.card{text-decoration:none;display:block;min-width:0}
+.card.hide{display:none}
+.card-img{aspect-ratio:4/3;overflow:hidden;background:var(--surface)}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.card:hover .card-img img{transform:scale(1.045)}
+.card-meta{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-top:14px}
+.card-meta h3{margin:0;font-family:var(--f-display);font-weight:300;font-size:clamp(18px,1.7vw,24px);letter-spacing:-.01em;line-height:1.2;transition:color .3s}
+.card-meta .mono{text-align:right;max-width:46%;line-height:1.5}
+.card:hover .card-meta h3{color:var(--accent)}
+#list li.hide{display:none}
+.peek{position:fixed;left:0;top:0;z-index:60;width:300px;aspect-ratio:4/3;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .35s ease;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+.peek.on{opacity:1}
+.peek img{width:100%;height:100%;object-fit:cover}
+
+/* ================= ГЛАВНАЯ: ЦИТАТА ================= */
+.quote{padding-block:clamp(40px,7vw,120px);border-top:1px solid var(--line)}
+.quote p{margin:0 0 24px;font-family:var(--f-display);font-weight:300;font-size:clamp(20px,2.6vw,38px);line-height:1.3;letter-spacing:-.015em;max-width:30ch;text-wrap:balance}
+.quote a{font-size:15px;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+.quote a:hover{border-color:var(--ink)}
+
+/* ================= ПОЯВЛЕНИЕ И КУРСОР ================= */
+.reveal{transition:opacity 1s ease,transform 1.2s var(--ease)}
+.reveal.pre{opacity:0;transform:translateY(46px)}
+.reveal .card-img img{transition:transform 1.6s var(--ease)}
+.reveal.pre .card-img img{transform:scale(1.14)}
+.cur{position:fixed;left:0;top:0;z-index:95;width:86px;height:86px;margin:-43px 0 0 -43px;border-radius:50%;background:rgba(244,244,241,.92);color:#18191B;display:grid;place-items:center;font-size:12px;letter-spacing:.04em;pointer-events:none;opacity:0;scale:.4;transition:opacity .3s ease,scale .4s var(--ease)}
+.cur.on{opacity:1;scale:1}
+[data-cursor]{cursor:none}
+
+@media (max-width:760px){
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .hs{height:min(78svh,720px);min-height:420px}
+  .hs-text{bottom:118px}
+  .hs-cap{left:var(--gut);right:auto;bottom:62px;max-width:calc(100% - 2*var(--gut))}
+  .hs-cap span:nth-child(2){font-size:14px}
+  .hs-dots{bottom:30px}
+  .hs-down{left:auto;right:var(--gut);transform:none;bottom:24px}
+  .card-meta .mono{text-align:left;max-width:none}
+  .hs-shade{background:linear-gradient(180deg,rgba(12,13,14,.25) 0%,rgba(12,13,14,0) 25%,rgba(12,13,14,.15) 45%,rgba(12,13,14,.72) 100%)}
+  .hs-text .mono{font-size:10.5px}
+  .works-head .filters{order:3;flex-basis:100%;margin-inline:calc(var(--gut) * -1);padding-inline:var(--gut)}
+  .viewtog{margin-left:0}
+  .card-meta{flex-direction:column;gap:4px}
+  .quote p{font-size:clamp(19px,5.4vw,24px)}
+}
+@media (prefers-reduced-motion:reduce){.hs-slide.on img{animation:none}}
+
+/* ================= ГЛАВНАЯ (старая, не используется) ================= */
 .home{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:clamp(20px,3vw,48px);padding-block:clamp(20px,3vw,40px)}
 .stage{position:sticky;top:calc(var(--head) + 24px);align-self:start;height:min(calc(100vh - var(--head) - 64px),760px);min-height:420px;overflow:hidden;background:var(--surface)}
 .stage figure{position:absolute;inset:0;margin:0;clip-path:inset(100% 0 0 0);transition:clip-path 1s var(--ease)}
@@ -394,6 +478,8 @@ const SITE = {
     name: "Мария Родионовская",
     role: "Архитектор, руководитель архитектурного бюро ON_Plane",
     city: "Москва",
+    tagline: "Интерьеры, которые раскрываются постепенно",
+    quote: "Люблю вписывать в интерьер винтажную мебель и авторские предметы, чтобы дом рассказывал историю своих хозяев.",
     portrait: "images/portrait/01.jpg",
     bio: [
       "Проектирую запоминающиеся интерьеры квартир и загородных домов. Больше всего внимания уделяю планировке и удобному зонированию, а детали подбираю так, чтобы они раскрывались постепенно.",
@@ -441,6 +527,14 @@ const SITE = {
   },
 
   categories: ["Квартиры", "Загородные дома"],
+
+  /* фото для большой обложки на главной: image — путь к фото, project — slug проекта */
+  hero: [
+    { image: "images/moskvorechye/01.jpg", project: "moskvorechye" },
+    { image: "images/domashny/01.jpg", project: "domashny" },
+    { image: "images/rozhdestvensky/01.jpg", project: "rozhdestvensky" },
+    { image: "images/domashny/23.jpg", project: "domashny" }
+  ],
 
   projects: [
     {
@@ -701,66 +795,101 @@ function footer(){
 
 function renderHome(){
   const counts=Object.fromEntries(SITE.categories.map(c=>[c,P.filter(p=>p.type===c).length]));
+  const hero=(SITE.hero&&SITE.hero.length?SITE.hero:P.map(p=>({image:p.cover,project:p.slug})))
+    .map(h=>({...h,p:P.find(x=>x.slug===h.project)})).filter(h=>h.p);
+  let view="grid"; try{view=localStorage.getItem("view")||"grid"}catch(e){}
   $view.innerHTML=`
-  <section class="home wrap">
-    <div class="stage rv" id="stage" style="--i:0">
-      ${P.map((p,i)=>`<figure data-i="${i}"><img src="${coverOf(p)}" data-ph="${phCover(p)}" alt="${esc(p.title)}"></figure>`).join("")}
-      <div class="stage-bar" id="stageBar"></div>
-      <div class="stage-cap"><div><div class="mono" id="stageMeta"></div><h2 id="stageTitle"></h2></div><span class="stage-count" id="stageCount"></span></div>
+  <section class="hs" id="hs" aria-label="Избранные проекты">
+    ${hero.map((h,i)=>`<div class="hs-slide${i===0?" on":""}"><img src="${esc(h.image)}" data-ph="${phCover(h.p)}" alt="${esc(h.p.title)}" ${i>1?'loading="lazy"':""}></div>`).join("")}
+    <div class="hs-shade"></div>
+    <div class="hs-text wrap">
+      <div class="mono rv" style="--i:1">Архитектор · ${esc(A.city)} · бюро ON_Plane</div>
+      <h1 class="rv" style="--i:2">${esc(A.name)}</h1>
+      ${A.tagline?`<p class="rv" style="--i:3">${esc(A.tagline)}</p>`:""}
     </div>
-    <div>
-      <div class="intro rv" style="--i:1">
-        <h1>${esc(A.name)}</h1>
-        <p>${esc(A.bio[0])}</p>
-      </div>
-      <div class="filters rv" style="--i:2" role="group" aria-label="Фильтр проектов">
+    <a class="hs-cap" id="hsCap" href="#p-${hero[0]?.p.slug||""}"><span class="mono" id="hsNum"></span><span id="hsTitle"></span><span aria-hidden="true">→</span></a>
+    <div class="hs-dots" id="hsDots">${hero.map((h,i)=>`<button type="button" aria-label="Проект ${i+1}"><i></i></button>`).join("")}</div>
+    <button class="hs-down" id="hsDown" type="button">Проекты <span aria-hidden="true">↓</span></button>
+  </section>
+
+  <section class="works wrap" id="works">
+    <div class="works-head">
+      <h2>Проекты</h2>
+      <div class="filters" role="group" aria-label="Фильтр проектов">
         <button class="chip" aria-pressed="true" data-f="*">Все<sup>${P.length}</sup></button>
         ${SITE.categories.map(c=>`<button class="chip" aria-pressed="false" data-f="${esc(c)}">${esc(c)}<sup>${counts[c]}</sup></button>`).join("")}
       </div>
-      <ol class="index">
-        ${P.map((p,i)=>`<li class="rv" style="--i:${i+3}" data-type="${esc(p.type)}"><a class="row" href="#p-${p.slug}" data-i="${i}">
-          <span class="y">${esc(p.year)}</span>
-          <span><span class="t">${esc(p.title)}</span><span class="k">${esc(p.type)}<span class="kl"> · ${esc(p.location)}</span></span></span>
-          <span class="l">${esc(p.location)}</span><span class="arr" aria-hidden="true">→</span></a></li>`).join("")}
-      </ol>
+      <div class="viewtog" role="group" aria-label="Вид">
+        <button type="button" data-v="grid" aria-pressed="${view==="grid"}">Сетка</button>
+        <button type="button" data-v="list" aria-pressed="${view==="list"}">Список</button>
+      </div>
     </div>
-  </section>${footer()}`;
+    <div class="cards reveal-group${view==="list"?" hidden-view":""}" id="cards">
+      ${P.map((p,i)=>`<a class="card reveal" href="#p-${p.slug}" data-type="${esc(p.type)}">
+        <div class="card-img" data-cursor="Смотреть"><img src="${coverOf(p)}" data-ph="${phCover(p)}" alt="${esc(p.title)}" loading="${i<2?"eager":"lazy"}"></div>
+        <div class="card-meta"><h3>${esc(p.title)}</h3><span class="mono">${esc(p.location)} · ${esc(p.year)}</span></div>
+      </a>`).join("")}
+    </div>
+    <ol class="index${view==="grid"?" hidden-view":""}" id="list">
+      ${P.map((p,i)=>`<li data-type="${esc(p.type)}"><a class="row" href="#p-${p.slug}" data-i="${i}">
+        <span class="y">${esc(p.year)}</span>
+        <span><span class="t">${esc(p.title)}</span><span class="k">${esc(p.type)}<span class="kl"> · ${esc(p.location)}</span></span></span>
+        <span class="l">${esc(p.location)}</span><span class="arr" aria-hidden="true">→</span></a></li>`).join("")}
+    </ol>
+  </section>
 
-  const figs=[...$view.querySelectorAll(".stage figure")], rows=[...$view.querySelectorAll(".row")];
-  const bar=document.getElementById("stageBar");
-  let cur=-1, timer=null, paused=false; const DUR=5000;
+  <section class="quote wrap reveal">
+    <p>«${esc(A.quote||A.bio[0])}»</p>
+    <a href="#about">${esc(A.name)} — об архитекторе <span aria-hidden="true">→</span></a>
+  </section>
+  <div class="peek" id="peek" aria-hidden="true"><img alt=""></div>
+  ${footer()}`;
+
+  /* обложка: медленная смена фото */
+  const slides=[...$view.querySelectorAll(".hs-slide")], dots=[...document.getElementById("hsDots").children];
+  const cap=document.getElementById("hsCap"), num=document.getElementById("hsNum"), ttl=document.getElementById("hsTitle");
+  let cur=0, timer=null; const DUR=6500;
   function show(i){
-    if(i===cur) return;
-    figs.forEach(f=>f.classList.remove("was"));
-    if(cur>=0){figs[cur].classList.remove("on");figs[cur].classList.add("was")}
-    figs[i].classList.add("on"); cur=i;
-    const p=P[i];
-    document.getElementById("stageTitle").textContent=p.title;
-    document.getElementById("stageMeta").textContent=`${p.location} · ${p.year}`;
-    document.getElementById("stageCount").textContent=`${String(i+1).padStart(2,"0")} / ${String(P.length).padStart(2,"0")}`;
-    rows.forEach(r=>r.classList.toggle("on",+r.dataset.i===i));
-    bar.classList.remove("run"); void bar.offsetWidth;
-    if(!paused){bar.style.setProperty("--dur",DUR+"ms");bar.classList.add("run")}
+    slides[cur].classList.remove("on"); slides[cur].classList.add("was");
+    setTimeout(()=>slides.forEach((s,k)=>{if(k!==i)s.classList.remove("was")}),1500);
+    cur=(i+slides.length)%slides.length; slides[cur].classList.add("on");
+    const h=hero[cur]; cap.href="#p-"+h.p.slug; num.textContent=`${String(cur+1).padStart(2,"0")} / ${String(slides.length).padStart(2,"0")}`; ttl.textContent=h.p.title;
+    dots.forEach((d,k)=>{d.classList.toggle("on",k===cur); d.style.setProperty("--dur",DUR+"ms")});
+    const nx=slides[(cur+1)%slides.length]?.querySelector("img"); if(nx) nx.loading="eager";
   }
-  const visible=()=>rows.filter(r=>!r.parentElement.classList.contains("hide")).map(r=>+r.dataset.i);
-  function tick(){const v=visible();if(!v.length)return;const k=v.indexOf(cur);show(v[(k+1)%v.length])}
-  function play(){clearInterval(timer);paused=false;timer=setInterval(tick,DUR);bar.classList.remove("run");void bar.offsetWidth;bar.classList.add("run")}
-  function pause(){paused=true;clearInterval(timer);bar.classList.remove("run")}
-  rows.forEach(r=>{
-    r.addEventListener("mouseenter",()=>{pause();show(+r.dataset.i)});
-    r.addEventListener("focus",()=>{pause();show(+r.dataset.i)});
-  });
-  $view.querySelector(".index").addEventListener("mouseleave",play);
-  document.getElementById("stage").addEventListener("click",()=>{if(cur>=0)location.hash="p-"+P[cur].slug});
-  document.getElementById("stage").style.cursor="pointer";
+  function play(){clearInterval(timer); if(slides.length>1) timer=setInterval(()=>show(cur+1),DUR)}
+  dots.forEach((d,k)=>d.addEventListener("click",()=>{show(k);play()}));
+  document.getElementById("hsDown").addEventListener("click",()=>document.getElementById("works").scrollIntoView({behavior:"smooth"}));
+  cur=0; show(0); slides[0].classList.remove("was"); play();
+
+  /* фильтр */
   $view.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{
     $view.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===ch));
     const f=ch.dataset.f;
-    $view.querySelectorAll(".index li").forEach(li=>li.classList.toggle("hide",f!=="*"&&li.dataset.type!==f));
-    const v=visible(); if(v.length&&!v.includes(cur)) show(v[0]);
+    $view.querySelectorAll(".card,#list li").forEach(el=>el.classList.toggle("hide",f!=="*"&&el.dataset.type!==f));
   }));
-  show(0); play();
-  stopHome=()=>clearInterval(timer);
+  /* сетка / список */
+  $view.querySelectorAll(".viewtog button").forEach(bt=>bt.addEventListener("click",()=>{
+    const v=bt.dataset.v; try{localStorage.setItem("view",v)}catch(e){}
+    $view.querySelectorAll(".viewtog button").forEach(x=>x.setAttribute("aria-pressed",x===bt));
+    document.getElementById("cards").classList.toggle("hidden-view",v!=="grid");
+    document.getElementById("list").classList.toggle("hidden-view",v!=="list");
+    $view.querySelectorAll(".card.pre").forEach(c=>c.classList.remove("pre"));
+  }));
+  /* список: фото проекта всплывает у курсора */
+  const peek=document.getElementById("peek"), pimg=peek.querySelector("img");
+  const fine=matchMedia("(hover:hover) and (pointer:fine)").matches;
+  let px=0,py=0,tx=0,ty=0,raf=0;
+  function loop(){px+=(tx-px)*.18; py+=(ty-py)*.18; peek.style.transform=`translate(${px}px,${py}px)`; raf=requestAnimationFrame(loop)}
+  if(fine){
+    $view.querySelectorAll("#list .row").forEach(r=>{
+      r.addEventListener("mouseenter",e=>{const p=P[+r.dataset.i]; pimg.src=coverOf(p); pimg.dataset.ph=phCover(p); tx=px=e.clientX+24; ty=py=e.clientY-120; peek.classList.add("on"); if(!raf) loop();});
+      r.addEventListener("mousemove",e=>{tx=e.clientX+24; ty=e.clientY-120});
+      r.addEventListener("mouseleave",()=>peek.classList.remove("on"));
+    });
+  }
+  revealIn($view);
+  stopHome=()=>{clearInterval(timer); cancelAnimationFrame(raf); raf=0};
 }
 
 function renderProject(p){
@@ -797,7 +926,33 @@ function renderProject(p){
   </a>${footer()}`;
   $view.querySelectorAll(".bs video").forEach(v=>v.addEventListener("play",()=>{$view.querySelectorAll(".bs video").forEach(o=>{if(o!==v)o.pause()})}));
   initSlider(slides);
+  $view.querySelectorAll(".p-body,.bs,.next").forEach(e=>e.classList.add("reveal"));
+  revealIn($view);
 }
+
+/* ============================ ПОЯВЛЕНИЕ ПРИ ПРОКРУТКЕ ============================ */
+const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let revealObs=null;
+function revealIn(root){
+  if(reduceMotion || !("IntersectionObserver" in window)) return;
+  if(!revealObs) revealObs=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.remove("pre"); revealObs.unobserve(en.target); } }),{rootMargin:"0px 0px -8% 0px"});
+  root.querySelectorAll(".reveal").forEach(el=>{
+    if(el.getBoundingClientRect().top > innerHeight*0.92){ el.classList.add("pre"); revealObs.observe(el); }
+  });
+}
+
+/* ============================ КУРСОР «СМОТРЕТЬ» (только мышь) ============================ */
+(()=>{
+  if(reduceMotion || !matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+  const c=document.createElement("div"); c.className="cur"; c.setAttribute("aria-hidden","true"); document.body.appendChild(c);
+  let x=0,y=0,tx=0,ty=0;
+  addEventListener("mousemove",e=>{ tx=e.clientX; ty=e.clientY;
+    const t=e.target.closest&&e.target.closest("[data-cursor]");
+    if(t){ c.textContent=t.dataset.cursor; c.classList.add("on"); } else c.classList.remove("on");
+  },{passive:true});
+  (function f(){ x+=(tx-x)*.22; y+=(ty-y)*.22; c.style.transform=`translate(${x}px,${y}px)`; requestAnimationFrame(f); })();
+  addEventListener("hashchange",()=>c.classList.remove("on"));
+})();
 
 /* ============================ СЛАЙДЕР ФОТО ПРОЕКТА ============================ */
 function initSlider(slides){
