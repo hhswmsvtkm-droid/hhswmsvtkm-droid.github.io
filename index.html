@@ -298,6 +298,21 @@ h1,h2,h3,.t,.lead,.stage-cap h2,.next h3,.pt,.bigmail a{overflow-wrap:break-word
 .bigmail a:hover{color:var(--accent)}
 .copy{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px}
 .copy:hover{border-color:var(--ink)}
+.clist{margin-top:clamp(28px,4vw,56px);border-top:1px solid var(--line)}
+.crow{display:grid;grid-template-columns:110px minmax(0,1fr) auto;align-items:center;gap:10px 24px;padding-block:clamp(18px,2.4vw,28px);border-bottom:1px solid var(--line)}
+.cval{font-family:var(--f-display);font-weight:300;font-size:clamp(22px,3.4vw,44px);letter-spacing:-.02em;text-decoration:none;overflow-wrap:anywhere}
+.cval:hover{color:var(--accent)}
+.cact{display:flex;gap:8px}
+.cbtn{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:14px;text-decoration:none;white-space:nowrap;transition:background .3s,color .3s,border-color .3s}
+.cbtn:hover{border-color:var(--ink)}
+.cbtn.solid{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.cbtn.solid:hover{background:var(--accent);border-color:var(--accent)}
+.pinbtn{display:inline-flex;align-items:center;gap:10px;margin-top:clamp(24px,3vw,40px);padding:12px 20px;border-radius:999px;background:#E60023;color:#fff;text-decoration:none;font-size:15px;transition:filter .3s,transform .4s var(--ease)}
+.pinbtn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+@media (max-width:620px){
+  .crow{grid-template-columns:minmax(0,1fr)}
+  .cact .cbtn{flex:1;justify-content:center}
+}
 .c-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
 .c-grid .mono{margin-bottom:8px}
 .c-grid p{margin:0}
@@ -521,6 +536,7 @@ const SITE = {
     phone: "+7 966 099-27-67",   // номер можно поменять здесь
     telegram: "",
     instagram: "",
+    pinterest: "",   // вставьте сюда ссылку на Pinterest Марии, например "https://www.pinterest.com/имя/"
     address: "Москва",
     hours: "",
     note: "Для первой встречи пришлите план квартиры или участка, площадь и пожелания к интерьеру. Возможны выезд на объект и онлайн-консультация."
@@ -536,6 +552,7 @@ const SITE = {
     { image: "images/shabolovka/01.jpg", project: "shabolovka" }
   ],
 
+  /* ПОРЯДОК ПРОЕКТОВ = порядок на сайте. Новые — вверху, старые — в самом низу (не по алфавиту). */
   projects: [
     {
       slug: "domashny",
@@ -732,6 +749,39 @@ const SITE = {
         { image: "images/top-hills/01.jpg", caption: "" },
         { image: "images/top-hills/02.jpg", caption: "" },
         { image: "images/top-hills/03.jpg", caption: "" }
+      ]
+    },
+    {
+      slug: "park-rublevo",
+      title: "Квартира в ЖК «Парк Рублёво»",
+      type: "Квартиры",
+      location: "Москва, ЖК «Парк Рублёво»",
+      year: "2018",
+      area: "",
+      status: "Реализован",
+      client: "Частный заказчик",
+      team: "Фото: Юрий Гришко · стиль: Дарья Казанцева",
+      cover: "images/park-rublevo/01.jpg",
+      lead: "Светлая квартира в духе современной классики в клубном доме у леса.",
+      text: [
+        "Главный жест гостиной — стена из камня с рисунком оникса, в которую встроены камин и ниша для живописи. Рядом глубокий диван из тёмно-синего бархата, кресла с яркими акцентами и столики с золотистыми деталями.",
+        "Кухня выполнена в классическом стиле в голубовато-серых тонах: филёнчатые фасады, витрины со стеклом, остров с каменной столешницей. Обеденная зона с круглым столом и синими креслами стоит у окна под хрустальной люстрой.",
+        "Спальня решена в спокойной серой гамме с пудрово-розовыми акцентами и абстрактной живописью. Рядом туалетный столик с бархатным креслом.",
+        "В санузлах оникс и травертин: тёплый медовый камень с подсветкой превращает небольшое помещение в самое эффектное место квартиры. Из квартиры есть выход на террасу с видом на лес."
+      ],
+      press: [
+        { name: "Houzz", kind: "Портфолио проекта", title: "ЖК «Парк Рублёво» — современная классика", url: "https://www.houzz.fr/photos/zhk-park-rublevo-phvw-vp~117891483" }
+      ],
+      gallery: [
+        { image: "images/park-rublevo/02.jpg", caption: "Гостиная с камином" },
+        { image: "images/park-rublevo/03.jpg", caption: "Кухня" },
+        { image: "images/park-rublevo/04.jpg", caption: "Столовая" },
+        { image: "images/park-rublevo/05.jpg", caption: "Спальня" },
+        { image: "images/park-rublevo/06.jpg", caption: "Туалетный столик" },
+        { image: "images/park-rublevo/07.jpg", caption: "Санузел с ониксом" },
+        { image: "images/park-rublevo/08.jpg", caption: "Прихожая" },
+        { image: "images/park-rublevo/09.jpg", caption: "Терраса" },
+        { image: "images/park-rublevo/10.jpg", caption: "Дом у леса" }
       ]
     }
   ]
@@ -1013,25 +1063,31 @@ function renderAbout(){
 }
 
 function renderContacts(){
+  const tel=(C.phone||"").replace(/[^+\d]/g,"");
+  const pin=`<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.64 7.86 6.36 9.32-.09-.79-.17-2 .03-2.87.18-.78 1.18-4.97 1.18-4.97s-.3-.6-.3-1.49c0-1.4.81-2.44 1.82-2.44.86 0 1.27.64 1.27 1.41 0 .86-.55 2.15-.83 3.34-.24 1 .5 1.81 1.48 1.81 1.78 0 3.14-1.87 3.14-4.58 0-2.39-1.72-4.07-4.18-4.07-2.85 0-4.52 2.14-4.52 4.35 0 .86.33 1.78.75 2.28.08.1.09.19.07.29-.08.31-.24 1-.28 1.14-.04.18-.14.22-.33.13-1.25-.58-2.03-2.4-2.03-3.87 0-3.15 2.29-6.04 6.6-6.04 3.46 0 6.16 2.47 6.16 5.77 0 3.45-2.17 6.22-5.19 6.22-1.01 0-1.97-.53-2.29-1.15l-.62 2.38c-.23.87-.84 1.96-1.25 2.62.94.29 1.94.45 2.97.45 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>`;
   $view.innerHTML=`
   <section class="contacts wrap">
     <div class="mono rv" style="--i:0">Контакты</div>
     <h1 class="rv" style="--i:1">Обсудим ваш проект</h1>
-    <div class="bigmail rv" style="--i:2"><a href="mailto:${esc(C.email)}">${esc(C.email)}</a><button class="copy" id="copyMail">Скопировать адрес</button></div>
-    <div class="c-grid rv" style="--i:3">
-      ${C.phone?`<div><div class="mono">Телефон</div><p><a href="tel:${esc(C.phone.replace(/[^+\d]/g,""))}">${esc(C.phone)}</a></p></div>`:""}
-      ${(C.telegram||C.instagram)?`<div><div class="mono">Мессенджеры</div><p>${C.telegram?`Telegram ${esc(C.telegram)}`:""}${C.telegram&&C.instagram?"<br>":""}${C.instagram?`Instagram ${esc(C.instagram)}`:""}</p></div>`:""}
-      <div><div class="mono">Бюро</div><p>ON_Plane<br>${esc(C.address)}${C.hours?`<br>${esc(C.hours)}`:""}</p></div>
-      <div><div class="mono">Как начать</div><p>${esc(C.note)}</p></div>
+    <div class="clist">
+      ${C.phone?`<div class="crow rv" style="--i:2">
+        <span class="mono">Телефон</span>
+        <a class="cval" href="tel:${esc(tel)}">${esc(C.phone)}</a>
+        <div class="cact"><a class="cbtn solid" href="tel:${esc(tel)}">Позвонить</a><button class="cbtn" type="button" data-copy="${esc(C.phone)}">Скопировать</button></div>
+      </div>`:""}
+      ${C.email?`<div class="crow rv" style="--i:3">
+        <span class="mono">Почта</span>
+        <a class="cval" href="mailto:${esc(C.email)}">${esc(C.email)}</a>
+        <div class="cact"><a class="cbtn solid" href="mailto:${esc(C.email)}">Написать</a><button class="cbtn" type="button" data-copy="${esc(C.email)}">Скопировать</button></div>
+      </div>`:""}
     </div>
+    ${C.pinterest?`<a class="pinbtn rv" style="--i:4" href="${esc(C.pinterest)}" target="_blank" rel="noopener">${pin}<span>Pinterest</span><span aria-hidden="true">↗</span></a>`:""}
   </section>${footer()}`;
-  document.getElementById("copyMail").addEventListener("click",e=>{
-    const b=e.currentTarget;
-    navigator.clipboard.writeText(C.email).then(()=>{b.textContent="Скопировано"},()=>{
-      const r=document.createRange();r.selectNodeContents($view.querySelector(".bigmail a"));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Адрес выделен"});
-    setTimeout(()=>b.textContent="Скопировать адрес",2200);
-  });
-
+  $view.querySelectorAll("[data-copy]").forEach(bt=>bt.addEventListener("click",()=>{
+    const v=bt.dataset.copy, done=t=>{bt.textContent=t; setTimeout(()=>bt.textContent="Скопировать",2000)};
+    const fallback=()=>{const val=bt.closest(".crow").querySelector(".cval"); const r=document.createRange(); r.selectNodeContents(val); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); done("Выделено");};
+    try{ navigator.clipboard.writeText(v).then(()=>done("Скопировано"),fallback); }catch(e){ fallback(); }
+  }));
 }
 
 /* ============================ ПЕРЕХОДЫ ============================ */
