@@ -533,7 +533,7 @@ const SITE = {
     { image: "images/moskvorechye/01.jpg", project: "moskvorechye" },
     { image: "images/domashny/01.jpg", project: "domashny" },
     { image: "images/rozhdestvensky/01.jpg", project: "rozhdestvensky" },
-    { image: "images/domashny/23.jpg", project: "domashny" }
+    { image: "images/shabolovka/01.jpg", project: "shabolovka" }
   ],
 
   projects: [
@@ -652,11 +652,12 @@ const SITE = {
       client: "Большая семья",
       team: "Фото: Сергей Красюк · стиль: Дарья Соболева",
       cover: "images/shabolovka/01.jpg",
-      lead: "Светлая квартира для большой семьи в районе конструктивистской застройки.",
+      lead: "Тёплая квартира для большой семьи в районе конструктивистской застройки: спокойная палитра, натуральные материалы и много света.",
       text: [
-        "Интерьер продолжает архитектуру района: строгие линии, сдержанная палитра из белого, светло-бежевого и серебристо-серого, натуральное дерево и мягкий дневной свет.",
-        "Открытая кухня-гостиная собирает семью вместе, а приватная часть чётко отделена: спальня с рабочим местом и гардеробной, две детские с собственной ванной.",
-        "Только натуральные материалы: дерево, мрамор, травертин, керамика ручной формовки и авторская скульптура. Мебель изготовлена по индивидуальному проекту в московской столярной мастерской."
+        "Интерьер продолжает архитектуру района: строгие линии, сдержанная палитра тёплых серо-бежевых оттенков, натуральное дерево и мягкий дневной свет из больших окон.",
+        "Гостиная, столовая и кухня объединены в одно пространство. В гостиной мягкий диван, скульптурные светлые кресла, круглые столики и гипсовые барельефы на стене. Над обеденным столом хрустальная люстра, а кухня с островом и оливковыми барными стульями продолжает ту же спокойную гамму.",
+        "Приватная часть отделена длинным коридором с деревянными панелями и бра. Спальня с мягким изголовьем, рабочим местом и гардеробной, детские со своим характером и собственной ванной.",
+        "Ванные комнаты стали самыми яркими местами квартиры: глазурованная плитка ручной формовки в зелёных тонах в одной и терракотовая мозаика в другой. Мебель изготовлена по индивидуальному проекту в московской столярной мастерской."
       ],
       press: [
         { name: "Salon-interior", kind: "Журнал, Россия", title: "Интерьер квартиры в центре Москвы, вдохновлённый конструктивизмом", url: "https://salon.ru/article/interer-kvartiry-v-centre-moskvy-vdohnovlennyj-konstruktivizmom-70492" },
@@ -664,20 +665,14 @@ const SITE = {
         { name: "Flatica", kind: "Портфолио проекта, Россия", title: "Светлая квартира на Шаболовке для большой семьи", url: "https://flatica.ru/projects/svetlaia-kvartira-na-shabolovke-dlia-bolshoi-semi-mariia-rodionovskaia-onplane-hccgl" }
       ],
       gallery: [
-        { image: "images/shabolovka/01.jpg", caption: "", size: "wide" },
-        { image: "images/shabolovka/02.jpg", caption: "" },
-        { image: "images/shabolovka/03.jpg", caption: "" },
-        { image: "images/shabolovka/04.jpg", caption: "" },
-        { image: "images/shabolovka/05.jpg", caption: "" },
-        { image: "images/shabolovka/06.jpg", caption: "" },
-        { image: "images/shabolovka/07.jpg", caption: "" },
-        { image: "images/shabolovka/08.jpg", caption: "" },
-        { image: "images/shabolovka/09.jpg", caption: "" },
-        { image: "images/shabolovka/10.jpg", caption: "" },
-        { image: "images/shabolovka/11.jpg", caption: "" },
-        { image: "images/shabolovka/12.jpg", caption: "" },
-        { image: "images/shabolovka/13.jpg", caption: "" },
-        { image: "images/shabolovka/14.jpg", caption: "" }
+        { image: "images/shabolovka/02.jpg", caption: "Гостиная" },
+        { image: "images/shabolovka/03.jpg", caption: "Столовая" },
+        { image: "images/shabolovka/04.jpg", caption: "Кухня" },
+        { image: "images/shabolovka/05.jpg", caption: "Коридор" },
+        { image: "images/shabolovka/06.jpg", caption: "Спальня" },
+        { image: "images/shabolovka/07.jpg", caption: "Детская" },
+        { image: "images/shabolovka/08.jpg", caption: "Ванная" },
+        { image: "images/shabolovka/09.jpg", caption: "Вторая ванная" }
       ]
     },
     {
@@ -794,7 +789,6 @@ function footer(){
 }
 
 function renderHome(){
-  const counts=Object.fromEntries(SITE.categories.map(c=>[c,P.filter(p=>p.type===c).length]));
   const hero=(SITE.hero&&SITE.hero.length?SITE.hero:P.map(p=>({image:p.cover,project:p.slug})))
     .map(h=>({...h,p:P.find(x=>x.slug===h.project)})).filter(h=>h.p);
   let view="grid"; try{view=localStorage.getItem("view")||"grid"}catch(e){}
@@ -815,10 +809,6 @@ function renderHome(){
   <section class="works wrap" id="works">
     <div class="works-head">
       <h2>Проекты</h2>
-      <div class="filters" role="group" aria-label="Фильтр проектов">
-        <button class="chip" aria-pressed="true" data-f="*">Все<sup>${P.length}</sup></button>
-        ${SITE.categories.map(c=>`<button class="chip" aria-pressed="false" data-f="${esc(c)}">${esc(c)}<sup>${counts[c]}</sup></button>`).join("")}
-      </div>
       <div class="viewtog" role="group" aria-label="Вид">
         <button type="button" data-v="grid" aria-pressed="${view==="grid"}">Сетка</button>
         <button type="button" data-v="list" aria-pressed="${view==="list"}">Список</button>
@@ -833,7 +823,7 @@ function renderHome(){
     <ol class="index${view==="grid"?" hidden-view":""}" id="list">
       ${P.map((p,i)=>`<li data-type="${esc(p.type)}"><a class="row" href="#p-${p.slug}" data-i="${i}">
         <span class="y">${esc(p.year)}</span>
-        <span><span class="t">${esc(p.title)}</span><span class="k">${esc(p.type)}<span class="kl"> · ${esc(p.location)}</span></span></span>
+        <span><span class="t">${esc(p.title)}</span><span class="k"><span class="kl">${esc(p.location)}</span></span></span>
         <span class="l">${esc(p.location)}</span><span class="arr" aria-hidden="true">→</span></a></li>`).join("")}
     </ol>
   </section>
@@ -862,12 +852,6 @@ function renderHome(){
   document.getElementById("hsDown").addEventListener("click",()=>document.getElementById("works").scrollIntoView({behavior:"smooth"}));
   cur=0; show(0); slides[0].classList.remove("was"); play();
 
-  /* фильтр */
-  $view.querySelectorAll(".chip").forEach(ch=>ch.addEventListener("click",()=>{
-    $view.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===ch));
-    const f=ch.dataset.f;
-    $view.querySelectorAll(".card,#list li").forEach(el=>el.classList.toggle("hide",f!=="*"&&el.dataset.type!==f));
-  }));
   /* сетка / список */
   $view.querySelectorAll(".viewtog button").forEach(bt=>bt.addEventListener("click",()=>{
     const v=bt.dataset.v; try{localStorage.setItem("view",v)}catch(e){}
@@ -895,13 +879,13 @@ function renderHome(){
 function renderProject(p){
   const i=P.indexOf(p), next=P[(i+1)%P.length], prev=P[(i-1+P.length)%P.length];
   const slides=[{src:coverOf(p),ph:phCover(p),cap:"Общий вид"}].concat((p.gallery||[]).map((g,k)=>({src:galOf(p,g,k),ph:placeholder(p.slug+"-"+k,g.caption||("Фото "+(k+1))),cap:g.caption||""})));
-  const specs=[["Тип",p.type],["Место",p.location],["Год",p.year],["Площадь",p.area],["Статус",p.status],["Заказчик",p.client],["Команда",p.team]].filter(s=>s[1]);
+  const specs=[["Место",p.location],["Год",p.year],["Площадь",p.area],["Статус",p.status],["Заказчик",p.client],["Команда",p.team]].filter(s=>s[1]);
   $view.innerHTML=`
   <section class="ps" id="ps" aria-roledescription="слайдер" aria-label="Фотографии проекта">
     <div class="ps-track" id="psTrack">
       ${slides.map((sl,k)=>`<div class="ps-slide" data-k="${k}" role="group" aria-label="Фото ${k+1} из ${slides.length}"><div class="ps-bg"></div><img src="${sl.src}" data-ph="${sl.ph}" alt="${esc(sl.cap||p.title)}" ${k<2?'':'loading="lazy"'} draggable="false"></div>`).join("")}
     </div>
-    <div class="p-hero-cap ps-title" id="psTitle"><div class="mono rv" style="--i:2">${esc(p.type)} · ${esc(p.location)} · ${esc(p.year)}</div><h1 class="rv" style="--i:3">${esc(p.title)}</h1></div>
+    <div class="p-hero-cap ps-title" id="psTitle"><div class="mono rv" style="--i:2">${esc(p.location)} · ${esc(p.year)}</div><h1 class="rv" style="--i:3">${esc(p.title)}</h1></div>
     <div class="ps-room mono" id="psRoom" aria-live="polite"></div>
     ${slides.length>1?`<button class="ps-nav prev" id="psPrev" type="button" aria-label="Предыдущее фото">←</button><button class="ps-nav next" id="psNext" type="button" aria-label="Следующее фото">→</button>`:""}
     <div class="ps-top"><span class="ps-count mono" id="psCount"></span><button class="ps-full" id="psFull" type="button">На весь экран</button></div>
@@ -945,13 +929,19 @@ function revealIn(root){
 (()=>{
   if(reduceMotion || !matchMedia("(hover:hover) and (pointer:fine)").matches) return;
   const c=document.createElement("div"); c.className="cur"; c.setAttribute("aria-hidden","true"); document.body.appendChild(c);
-  let x=0,y=0,tx=0,ty=0;
+  let x=0,y=0,tx=0,ty=0,shown=false;
+  const place=()=>{ c.style.transform=`translate(${x}px,${y}px)`; };
   addEventListener("mousemove",e=>{ tx=e.clientX; ty=e.clientY;
     const t=e.target.closest&&e.target.closest("[data-cursor]");
-    if(t){ c.textContent=t.dataset.cursor; c.classList.add("on"); } else c.classList.remove("on");
+    if(t){
+      if(!shown){ x=tx; y=ty; place(); shown=true; }   // появляется сразу под курсором
+      c.textContent=t.dataset.cursor; c.classList.add("on");
+    } else { shown=false; c.classList.remove("on"); }
   },{passive:true});
-  (function f(){ x+=(tx-x)*.22; y+=(ty-y)*.22; c.style.transform=`translate(${x}px,${y}px)`; requestAnimationFrame(f); })();
-  addEventListener("hashchange",()=>c.classList.remove("on"));
+  document.addEventListener("mouseleave",()=>{ shown=false; c.classList.remove("on"); });
+  addEventListener("scroll",()=>{ if(shown){ const el=document.elementFromPoint(tx,ty); if(!el||!el.closest("[data-cursor]")){ shown=false; c.classList.remove("on"); } } },{passive:true});
+  (function f(){ if(shown){ x+=(tx-x)*.25; y+=(ty-y)*.25; place(); } requestAnimationFrame(f); })();
+  addEventListener("hashchange",()=>{ shown=false; c.classList.remove("on"); });
 })();
 
 /* ============================ СЛАЙДЕР ФОТО ПРОЕКТА ============================ */
